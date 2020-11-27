@@ -70,7 +70,8 @@ bot.command :test do |event|
 
   bot.send_message(channel_id_thirty,"#{access_token_test}")
 
-  url = "https://api.worldoftanks.asia/wot/auth/prolongate/?application_id=#{application_id}&access_token=ab00c792706de6baec0511fa7964477877d71c94"
+  url = "https://api.worldoftanks.asia/wot/auth/prolongate/?application_id=#{application_id}&access_token=#{access_token_test}"
+  bot.send_message(channel_id_thirty,"#{url}")
   client = HTTPClient.new
   response = client.get(url)
   result = JSON.parse(response.body)
