@@ -14,7 +14,6 @@ clan_ids = ["1845","6800","29274","34796","16297"]
 access_token = ENV['ACCESS_TOKEN']
 #channel_id_thirty = "451034405721473026"#本番
 channel_id_thirty = "549143999814959124"#テスト
-member_ids = ""
 
 bot.command :buku do |event|
 
@@ -25,6 +24,8 @@ bot.command :buku do |event|
   today = Date.today
 
   clan_ids.each do |clan_id|
+
+    member_ids = ""
 
     url = "https://api.wotblitz.asia/wotb/clans/info/?application_id=#{application_id}&clan_id=#{clan_id}&fields=tag%2Cmembers_ids"
     client = HTTPClient.new
@@ -48,7 +49,7 @@ bot.command :buku do |event|
     results = JSON.parse(response.body)
 
     results["data"].each do |member_data|
-      
+
       nickname = member_data[1]["nickname"]
       last_battle_time_unix = member_data[1]["last_battle_time"]
       last_battle_date = Time.at(last_battle_time_unix).to_date
