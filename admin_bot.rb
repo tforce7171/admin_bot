@@ -48,8 +48,10 @@ bot.command :buku do |event|
     client = HTTPClient.new
     response = client.get(url)
     results = JSON.parse(response.body)
+    bot.send_message(channel_id_thirty, "#{results}")
 
     results["data"].each do |member_data|
+      bot.send_message(channel_id_thirty, "#{member_data}")
 
       nickname = member_data["nickname"]
       last_battle_time_unix = member_data["last_battle_time"]
