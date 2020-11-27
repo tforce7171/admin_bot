@@ -12,6 +12,7 @@ prefix:'/',
 application_id = ENV['APPLICATION_ID']
 clan_ids = ["1845","6800","29274","34796","16297"]
 access_token = ENV['ACCESS_TOKEN']
+access_token_test = ENV['ACCESS_TOKEN_TEST']
 channel_id_thirty = "451034405721473026"#本番
 # channel_id_thirty = "549143999814959124"#テスト
 
@@ -66,8 +67,8 @@ bot.command :buku do |event|
 end
 
 bot.command :test do |event|
-
-  url = "https://api.worldoftanks.asia/wot/auth/login/?application_id=#{application_id}&nofollow=1"
+ab00c792706de6baec0511fa7964477877d71c94
+  url = "https://api.worldoftanks.asia/wot/auth/prolongate/?application_id=#{application_id}&access_token=#{access_token_test}"
   client = HTTPClient.new
   response = client.get(url)
   result = JSON.parse(response.body)
