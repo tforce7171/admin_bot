@@ -67,7 +67,7 @@ bot.command :buku do |event|
 end
 
 bot.command :test do |event|
-ab00c792706de6baec0511fa7964477877d71c94
+
   url = "https://api.worldoftanks.asia/wot/auth/prolongate/?application_id=#{application_id}&access_token=#{access_token_test}"
   client = HTTPClient.new
   response = client.get(url)
