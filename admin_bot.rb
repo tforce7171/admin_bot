@@ -14,7 +14,7 @@ clan_ids = ["1845","6800","29274","34796","16297"]
 access_token = ENV['ACCESS_TOKEN']
 #channel_id_thirty = "451034405721473026"#本番
 channel_id_thirty = "549143999814959124"#テスト
-member_ids_out = ""
+member_ids = ""
 
 bot.command :buku do |event|
 
