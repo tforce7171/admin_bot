@@ -36,28 +36,27 @@ bot.command :buku do |event|
 
     result["data"]["#{clan_id}"]["members_ids"].each do |member_id|
 
-      if date_range <= date_since_last_battle
-        member_ids_out = member_ids_out + "#{member_id}%2C"
-      end
+      member_ids = member_ids + "#{member_id}%2C"
 
     end
 
     member_ids_out = member_ids_out.chomp('%2C')
 
-    url = "https://api.wotblitz.asia/wotb/account/info/?application_id=#{application_id}&access_token=#{access_token}&account_id=#{member_ids_out}&fields=nickname%2Clast_battle_time"
+    url = "https://api.wotblitz.asia/wotb/account/info/?application_id=#{application_id}&access_token=#{access_token}&account_id=#{member_ids}&fields=nickname%2Clast_battle_time"
     client = HTTPClient.new
     response = client.get(url)
     results = JSON.parse(response.body)
-    bot.send_message(channel_id_thirty, "#{results}")
 
     results["data"].each do |member_data|
-      bot.send_message(channel_id_thirty, "#{member_data}")
 
       nickname = member_data["nickname"]
       last_battle_time_unix = member_data["last_battle_time"]
       last_battle_date = Time.at(last_battle_time_unix).to_date
       date_since_last_battle = (today - last_battle_date).to_i
-      bot.send_message(channel_id_thirty, "#{nickname} : #{date_since_last_battle}日")
+
+      if date_range <= date_since_last_battle
+        bot.send_message(channel_id_thirty, "#{nickname} : #{date_since_last_battle}日")
+      end
 
     end
 
