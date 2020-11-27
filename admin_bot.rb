@@ -13,8 +13,8 @@ application_id = ENV['APPLICATION_ID']
 clan_ids = ["1845","6800","29274","34796","16297"]
 access_token = ENV['ACCESS_TOKEN']
 access_token_test = ENV['ACCESS_TOKEN_TEST']
-channel_id_thirty = "451034405721473026"#本番
-# channel_id_thirty = "549143999814959124"#テスト
+# channel_id_thirty = "451034405721473026"#本番
+channel_id_thirty = "549143999814959124"#テスト
 
 bot.command :buku do |event|
 
