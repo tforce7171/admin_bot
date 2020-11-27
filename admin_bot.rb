@@ -48,7 +48,7 @@ bot.command :buku do |event|
     results = JSON.parse(response.body)
 
     results["data"].each do |member_data|
-      bot.send_message(channel_id_thirty, "#{member_data}")
+      
       nickname = member_data[1]["nickname"]
       last_battle_time_unix = member_data[1]["last_battle_time"]
       last_battle_date = Time.at(last_battle_time_unix).to_date
