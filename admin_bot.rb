@@ -49,8 +49,8 @@ bot.command :buku do |event|
 
     results["data"].each do |member_data|
       bot.send_message(channel_id_thirty, "#{member_data}")
-      nickname = member_data["nickname"]
-      last_battle_time_unix = member_data["last_battle_time"]
+      nickname = member_data[]["nickname"]
+      last_battle_time_unix = member_data[]["last_battle_time"]
       last_battle_date = Time.at(last_battle_time_unix).to_date
       date_since_last_battle = (today - last_battle_date).to_i
 
