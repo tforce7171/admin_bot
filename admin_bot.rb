@@ -40,7 +40,7 @@ bot.command :buku do |event|
 
     end
 
-    member_ids_out = member_ids_out.chomp('%2C')
+    member_ids = member_ids.chomp('%2C')
 
     url = "https://api.wotblitz.asia/wotb/account/info/?application_id=#{application_id}&access_token=#{access_token}&account_id=#{member_ids}&fields=nickname%2Clast_battle_time"
     client = HTTPClient.new
