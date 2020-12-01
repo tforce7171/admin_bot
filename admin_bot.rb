@@ -10,12 +10,13 @@ token: ENV['TOKEN'],
 client_id: ENV['CLIENT_ID'],
 prefix:'/',
 )
+assign_time_hour = 16
+assign_time_min = 00
+exec_count = 0
 application_id = ENV['APPLICATION_ID']
 clan_ids = ["1845","6800","29274","34796","16297"]
-access_token = ENV['ACCESS_TOKEN']
-#access_token_test = ENV['ACCESS_TOKEN_TEST']
-# channel_id_thirty = "451034405721473026"#本番
-channel_id_thirty = "549143999814959124"#テスト
+channel_id_thirty = "451034405721473026"#本番
+#channel_id_thirty = "549143999814959124"#テスト
 
 uri = URI.parse(ENV['DATABASE_URL'])
    conn = PG::connect(
@@ -54,6 +55,10 @@ bot.command :buku do |event|
 
     member_ids = member_ids.chomp('%2C')
 
+    rows = conn.exec("select * from access_token where id=1")
+    row = rows.first
+    access_token = row["access_token"]
+
     url = "https://api.wotblitz.asia/wotb/account/info/?application_id=#{application_id}&access_token=#{access_token}&account_id=#{member_ids}&fields=nickname%2Clast_battle_time"
     client = HTTPClient.new
     response = client.get(url)
@@ -76,42 +81,35 @@ bot.command :buku do |event|
   bot.send_message(channel_id_thirty, "done")
 end
 
-bot.command :test do |event|
+bot.heartbeat do |event|
 
-  rows = conn.exec("select * from access_token where id=1")
-  bot.send_message(channel_id_thirty,"#{rows}")
-  row = rows.first
-  access_token_test = row["access_token"]
+  now_hour = Time.now.hour
+  now_min = Time.now.min
 
-  bot.send_message(channel_id_thirty,"#{access_token_test}")
+  if assign_time_hour == now_hour && assign_time_min <= now_min && exec_count == 0
+    rows = conn.exec("select * from access_token where id=1")
+    row = rows.first
+    access_token = row["access_token"]
 
-  url = "https://api.worldoftanks.asia/wot/auth/prolongate/"
-  client = HTTPClient.new
-  response = client.post(url,{
-    application_id: "#{application_id}",
-    access_token: "#{access_token_test}"})
-  result = JSON.parse(response.body)
+    url = "https://api.worldoftanks.asia/wot/auth/prolongate/"
+    client = HTTPClient.new
+    response = client.post(url,{
+      application_id: "#{application_id}",
+      access_token: "#{access_token}"})
+    result = JSON.parse(response.body)
 
-  bot.send_message(channel_id_thirty,"#{result}")
+    access_token = result["data"]["access_token"]
+    conn.exec("
+      update access_token
+      set access_token='#{access_token}'
+      where id=1
+      ")
+  end
+  exec_count = 1
 
-  access_token_test = result["data"]["access_token"]
-  conn.exec("
-    update access_token
-    set access_token='#{access_token_test}'
-    where id=1
-    ")
-
-
-
-  # url = "https://api.worldoftanks.asia/wot/auth/prolongate/?application_id=#{application_id}&access_token=#{access_token}"
-  # client = HTTPClient.new
-  # response = client.get(url)
-  # result = JSON.parse(response.body)
-  #
-  # bot.send_message(channel_id_boshuu,"#{result}")
-  #
-  # access_token = result["data"]["access_token"]
-  # ENV['ACCESS_TOKEN'] = access_token
+  if assign_time_hour < now_hour && exec_count == 1
+    exec_count = 0
+  end
 
 end
 
