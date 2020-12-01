@@ -17,13 +17,14 @@ access_token = ENV['ACCESS_TOKEN']
 # channel_id_thirty = "451034405721473026"#本番
 channel_id_thirty = "549143999814959124"#テスト
 
-conn = PG.connect(
-  :host => 'ec2-34-204-121-19compute-1.amazonaws.com',
-  :user => 'drfhnttmqcvgxm',
-  :dbname => 'd80sc5jlbk4p7h', 
-  :port => '5432',
-  :password => 'c992e8ac46972fc6d124e641bbab98d0772dd3ff1f7fdc047421be52113e48c9'
-)
+uri = URI.parse(ENV['DATABASE_URL'])
+   @client ||= PG::connect(
+     host: uri.hostname,
+     dbname: uri.path[1..-1],
+     user: uri.user,
+     port: uri.port,
+     password: uri.password
+   )
 
 bot.command :buku do |event|
 
