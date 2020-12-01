@@ -78,8 +78,9 @@ end
 
 bot.command :test do |event|
 
-  row = conn.exec("select * from access_token where id=1")
-  bot.send_message(channel_id_thirty,"#{row}")
+  rows = conn.exec("select * from access_token where id=1")
+  bot.send_message(channel_id_thirty,"#{rows}")
+  row = rows.first
   access_token_test = row["access_token"]
 
   bot.send_message(channel_id_thirty,"#{access_token_test}")
