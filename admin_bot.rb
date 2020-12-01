@@ -97,7 +97,7 @@ bot.command :test do |event|
   access_token_test = result["data"]["access_token"]
   conn.exec("
     update access_token
-    set access_token=#{access_token_test}
+    set access_token='#{access_token_test}'
     where id=1
     ")
 
