@@ -18,7 +18,7 @@ access_token = ENV['ACCESS_TOKEN']
 channel_id_thirty = "549143999814959124"#テスト
 
 uri = URI.parse(ENV['DATABASE_URL'])
-   @client ||= PG::connect(
+   conn = PG::connect(
      host: uri.hostname,
      dbname: uri.path[1..-1],
      user: uri.user,
