@@ -80,7 +80,8 @@ bot.command :test do |event|
 
   rows = conn.exec("select * from access_token")
   bot.send_message(channel_id_thirty,"#{rows}")
-  access_token_test = rows["access_token"]
+  row = rows.first
+  access_token_test = row["access_token"]
 
   bot.send_message(channel_id_thirty,"#{access_token_test}")
 
