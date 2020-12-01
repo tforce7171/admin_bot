@@ -78,8 +78,6 @@ end
 
 bot.command :test do |event|
 
-  bot.send_message(channel_id_thirty,"#{access_token_test}")
-
   rows = conn.exec("select * from access_token")
   access_token_test = rows["access_token"]
 
@@ -98,7 +96,7 @@ bot.command :test do |event|
   conn.exec("
     update access_token
     set access_token=#{access_token_test}
-    where id=6
+    where id=1
     ")
 
 
