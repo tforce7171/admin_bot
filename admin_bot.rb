@@ -3,6 +3,7 @@ require 'httpclient'
 require 'json'
 require 'date'
 require 'time'
+require 'pg'
 
 bot = Discordrb::Commands::CommandBot.new(
 token: ENV['TOKEN'],
@@ -12,9 +13,17 @@ prefix:'/',
 application_id = ENV['APPLICATION_ID']
 clan_ids = ["1845","6800","29274","34796","16297"]
 access_token = ENV['ACCESS_TOKEN']
-access_token_test = ENV['ACCESS_TOKEN_TEST']
+#access_token_test = ENV['ACCESS_TOKEN_TEST']
 # channel_id_thirty = "451034405721473026"#本番
 channel_id_thirty = "549143999814959124"#テスト
+
+conn = PG.connect(
+  :host => 'ec2-34-204-121-19compute-1.amazonaws.com',
+  :user => 'drfhnttmqcvgxm',
+  :dbname => 'd80sc5jlbk4p7h', 
+  :port => '5432',
+  :password => 'c992e8ac46972fc6d124e641bbab98d0772dd3ff1f7fdc047421be52113e48c9'
+)
 
 bot.command :buku do |event|
 
@@ -70,12 +79,28 @@ bot.command :test do |event|
 
   bot.send_message(channel_id_thirty,"#{access_token_test}")
 
+  rows = conn.exec("select * from access_token")
+  access_token_test = rows["access_token"]
+
+  bot.send_message(channel_id_thirty,"#{access_token_test}")
+
   url = "https://api.worldoftanks.asia/wot/auth/prolongate/"
   client = HTTPClient.new
-  response = client.post(url,{application_id: "#{application_id}",access_token: "#{access_token_test}"})
+  response = client.post(url,{
+    application_id: "#{application_id}",
+    access_token: "#{access_token_test}"})
   result = JSON.parse(response.body)
 
   bot.send_message(channel_id_thirty,"#{result}")
+
+  access_token_test = result["data"]["access_token"]
+  conn.exec("
+    update access_token
+    set access_token=#{access_token_test}
+    where id=6
+    ")
+
+
 
   # url = "https://api.worldoftanks.asia/wot/auth/prolongate/?application_id=#{application_id}&access_token=#{access_token}"
   # client = HTTPClient.new
