@@ -19,8 +19,8 @@ assign_time_min = 0o0
 exec_count = 0
 application_id = ENV['APPLICATION_ID']
 clan_ids = [1845, 6800, 29274, 34796, 16297]
-# channel_id_thirty = '451034405721473026' # 本番
-channel_id_thirty = "549143999814959124"#テスト
+channel_id_thirty = '451034405721473026' # 本番
+# channel_id_thirty = "549143999814959124"#テスト
 
 def MakeMessage(event,clan_ids)
   message = ""
