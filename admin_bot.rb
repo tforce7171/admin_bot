@@ -7,7 +7,7 @@ require 'pg'
 require 'dotenv'
 require_relative 'wg_api'
 
-Dotenv.load('secret.env')
+Dotenv.load
 bot = Discordrb::Commands::CommandBot.new(
   token: ENV['TOKEN'],
   client_id: ENV['CLIENT_ID'],
@@ -19,15 +19,16 @@ assign_time_min = 0o0
 exec_count = 0
 application_id = ENV['APPLICATION_ID']
 clan_ids = [1845, 6800, 29274, 34796, 16297]
-channel_id_thirty = '451034405721473026' # 本番
-# channel_id_thirty = "549143999814959124"#テスト
+# channel_id_thirty = '451034405721473026' # 本番
+channel_id_thirty = "549143999814959124"#テスト
 
 def MakeMessage(event,clan_ids)
   message = ""
+  date_range = GetDateRange(event)
   clan_ids.each do |clan_id|
     result = GetClanData(clan_id)
     tag = GetClanTag(result,clan_id)
-    non_active_data = GetNonActiveData(event,result,clan_id)
+    non_active_data = GetNonActiveData(date_range,result,clan_id)
     message = CombineString(message,tag,non_active_data)
   end
   return message
@@ -40,11 +41,9 @@ def GetClanTag(result,clan_id)
   tag = result['data'][clan_id.to_s]['tag']
   return tag
 end
-def GetNonActiveData(event,result,clan_id)
+def GetNonActiveData(date_range,result,clan_id)
   non_active_data = {}
   personal_data = GetPersonalData(result,clan_id)
-  print personal_data
-  date_range = GetDateRange(event)
   today = Date.today
   personal_data['data'].each do |member_data|
     nickname = member_data[1]['nickname']
@@ -68,6 +67,7 @@ def GetPersonalData(result,clan_id)
 end
 def GetDateRange(event)
   bot_message = event.message.content
+  print bot_message
   bot_message.slice!(0, 5)
   date_range = bot_message.to_i
   return date_range

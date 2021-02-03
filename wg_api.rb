@@ -6,7 +6,7 @@ require 'dotenv'
 class WGAPI
   attr_reader :application_id
   def initialize
-    Dotenv.load('secret.env')
+    Dotenv.load
     @application_id = ENV['APPLICATION_ID']
   end
   def GetClanMembers(clan_id)
