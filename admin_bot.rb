@@ -7,7 +7,7 @@ require 'pg'
 require 'dotenv'
 require_relative 'wg_api'
 
-Dotenv.load
+Dotenv.load('secret.env')
 bot = Discordrb::Commands::CommandBot.new(
   token: ENV['TOKEN'],
   client_id: ENV['CLIENT_ID'],
