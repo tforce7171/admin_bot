@@ -93,8 +93,4 @@ bot.command :buku do |event|
   bot.send_message(channel_id_thirty,message)
 end
 
-bot.heartbeat do |_event|
-  @wgapi.ProlongateAccessToken()
-end
-
 bot.run
