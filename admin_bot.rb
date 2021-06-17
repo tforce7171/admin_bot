@@ -3,11 +3,10 @@ require 'httpclient'
 require 'json'
 require 'date'
 require 'time'
-require 'pg'
 require 'dotenv'
 require_relative 'wg_api'
 
-Dotenv.load
+Dotenv.load('secret.env')
 bot = Discordrb::Commands::CommandBot.new(
   token: ENV['TOKEN'],
   client_id: ENV['CLIENT_ID'],
@@ -19,8 +18,8 @@ assign_time_min = 0o0
 exec_count = 0
 application_id = ENV['APPLICATION_ID']
 clan_ids = [1845, 6800, 29274, 34796, 16297]
-# channel_id_thirty = '451034405721473026' # 本番
-channel_id_thirty = "549143999814959124"#テスト
+channel_id_thirty = '451034405721473026' # 本番
+# channel_id_thirty = "809335877473402920"#テスト
 
 def MakeMessage(event,clan_ids)
   message = ""
@@ -85,7 +84,7 @@ def CombineString(message,tag,non_active_data)
 end
 
 bot.ready do
-  bot.send_message(channel_id_thirty,"up and ready")
+# bot.send_message(channel_id_thirty,"up and ready")
 end
 
 bot.command :buku do |event|
@@ -95,15 +94,7 @@ bot.command :buku do |event|
 end
 
 bot.heartbeat do |_event|
-  now_hour = Time.now.hour
-  now_min = Time.now.min
-
-  if assign_time_hour == now_hour && assign_time_min <= now_min && exec_count == 0
-    @wgapi.ProlongateAccessToken
-  end
-  exec_count = 1
-
-  exec_count = 0 if assign_time_hour < now_hour && exec_count == 1
+  @wgapi.ProlongateAccessToken()
 end
 
 bot.run
