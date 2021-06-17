@@ -1,6 +1,7 @@
 require 'httpclient'
 require 'json'
 require 'dotenv'
+require 'pg'
 
 class WGAPI
   attr_reader :application_id
@@ -16,8 +17,8 @@ class WGAPI
   #   end
   # end
   def GetAccessToken()
-    DATABASE_URL = ENV['DATABASE_URL']
-    uri = URI.parse(DATABASE_URL)
+    database_url = ENV['DATABASE_URL']
+    uri = URI.parse(database_url)
     conn = PG::connect(
       host: uri.hostname,
       dbname: uri.path[1..-1],
