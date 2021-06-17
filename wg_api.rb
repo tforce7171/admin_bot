@@ -29,6 +29,7 @@ class WGAPI
     result = conn.exec("SELECT * FROM wg_access_token")
     result.each do |tuple|
       access_token = tuple["wg_access_token"]
+      p access_token
     end
     return access_token
   end
