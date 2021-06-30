@@ -17,21 +17,10 @@ class WGAPI
   #   end
   # end
   def GetAccessToken()
-    database_url = ENV['DATABASE_URL']
-    uri = URI.parse(database_url)
-    conn = PG::connect(
-      host: uri.hostname,
-      dbname: uri.path[1..-1],
-      user: uri.user,
-      port: uri.port,
-      password: uri.password
-    )
-    result = conn.exec("SELECT * FROM wg_access_token")
-    access_token = result[0]["wg_access_token"]
-    # result.each do |tuple|
-    #   access_token = tuple["wg_access_token"]
-    #   p access_token
-    # end
+    url = "https://tokenrefresher.herokuapp.com/active_token"
+    client = HTTPClient.new
+    response = client.get(url)
+    access_token = JSON.parse(response.body)
     return access_token
   end
   def ProlongateAccessToken()
